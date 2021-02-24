@@ -16,11 +16,15 @@ app.use(express.static(publicDirectoryPath));
 io.on('connection', (socket) => {
     console.log("New Webscoket connection");
     
-    socket.emit('message', "Welcome To Server")    
-    socket.broadcast.emit('message',"A New user has join")
+    socket.emit('message', "Welcome To Server")
+    socket.broadcast.emit('message', "A New user has join")
     
-    socket.on('sendMessage', (message) =>{
-        io.emit('message',message)
+    socket.on('sendMessage', (message) => {
+        io.emit('message', message)
+    })
+    
+    socket.on('sendLocation', ({latitude,longitude}) =>{
+        io.emit('message',`location : ${latitude} and ${longitude}`)
     })
     
     socket.on('disconnect',()=>{
