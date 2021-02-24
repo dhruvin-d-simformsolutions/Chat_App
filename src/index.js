@@ -17,11 +17,18 @@ io.on('connection', (socket) => {
     console.log("New Webscoket connection");
     
     socket.emit('message', "Welcome To Server")    
+    socket.broadcast.emit('message',"A New user has join")
     
     socket.on('sendMessage', (message) =>{
         io.emit('message',message)
     })
+    
+    socket.on('disconnect',()=>{
+        io.emit('message','A User has left')
+    })
 })
+
+
 
 server.listen(port,()=>{
     console.log("Server is running on port ",port);
