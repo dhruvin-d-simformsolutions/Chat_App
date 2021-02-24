@@ -1,25 +1,33 @@
 const scoket = io()
 
-document.querySelector("#message-form").addEventListener('submit',(e)=>{
+document.querySelector("#message-form").addEventListener('submit', (e) => {
     e.preventDefault()
-    
+
     const message = e.target.elements.message.value
-    scoket.emit("sendMessage",message)
+    scoket.emit("sendMessage", message,(error)=>{
+        // console.log("Meassage ",message);
+        if(error){
+            return console.log(error);
+        }
+        console.log("Messge Delivered! ");
+    })
 })
 
-scoket.on('message',(welcommessage) =>{
+scoket.on('message', (welcommessage) => {
     console.log(welcommessage);
 })
 
-document.querySelector('#send-location').addEventListener('click',()=>{
-    if (!navigator.geolocation){
+document.querySelector('#send-location').addEventListener('click', () => {
+    if (!navigator.geolocation) {
         return alert('Geolocation is not supported by your browser')
     }
-    navigator.geolocation.getCurrentPosition((position)=>{
-    //   console.log(position);
-      scoket.emit('sendLocation',{
-        latitude : position.coords.latitude,
-        longitude : position.coords.longitude
-      })
+    navigator.geolocation.getCurrentPosition((position) => {
+        //   console.log(position);
+        scoket.emit('sendLocation', {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+        },()=>{
+            console.log('Location Shared');
+        })
     })
 })
