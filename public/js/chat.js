@@ -14,16 +14,18 @@ const locationMessageTemplate = document.querySelector('#location-message-templa
 scoket.on('message', (message) => {
     console.log(message);
     const html = Mustache.render(messageTemplate, {
-        message
+        message : message.text,
+        createdAt : moment(message.createdAt).format('h:mm a')
     })
     $messages.insertAdjacentHTML('beforeend', html)
 
 })
 
-scoket.on('locationMessage', (url)=>{
-    console.log(url);
-    const html = Mustache.render(locationMessageTemplate, {
-        url
+scoket.on('locationMessage', (message)=>{
+    // console.log(url);
+    const html = Mustache.render(locationMessageTemplate    , {
+        url : message.url,
+        createdAt : moment(message.createdAt).format('h:mm a')
     })
     $messages.insertAdjacentHTML('beforeend', html)
     
